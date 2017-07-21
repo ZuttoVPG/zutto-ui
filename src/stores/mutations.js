@@ -3,6 +3,15 @@
 export default {
   SET_STATS: (state, { items }) => {
     state.siteStats = items.data
+  },
+
+  SET_AUTH_USER: (state, { items }) => {
+    if (items.data == null) {
+      state.authUser = false
+      return
+    }
+
+    state.authUser = items.data
   }
   /*
   SET_ACTIVE_TYPE: (state, { type }) => {

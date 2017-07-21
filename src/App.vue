@@ -15,7 +15,7 @@
 			<div class="collapse navbar-collapse justify-content-between">
         <ul class="nav" role="navigation">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <router-link :to="'/'" class='nav-link'>Home</router-link> <span class="sr-only">(current)</span></router-link>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Inventory</a>
@@ -31,12 +31,17 @@
           </li>
         </ul>
       
-        <ul class='nav navbar-user ml-auto'>
+        <ul class='nav navbar-user ml-auto' v-show="authUser == false">
           <li class='nav-item'>
             <a href='#' class='nav-link'>Sign Up</a>
           </li>
           <li class='nav-item'>
-            <a href='#' class='nav-link'>Login</a>
+            <router-link :to="'login'" class='nav-link'>Login</router-link>
+          </li>
+        </ul>
+        <ul class='nav navbar-user ml-auto' v-show="authUser != false">
+          <li class='nav-item'>
+            <a href='#' class='nav-link'>{{ authUser.username }}</a>
           </li>
         </ul>
       </div>
@@ -76,7 +81,15 @@
 require('./assets/yshi-bootstrap/app.js')
 
 export default {
-  name: 'app'
+  name: 'app',
+  computed: {
+    authUser () {
+      return this.$store.state.authUser
+    }
+  },
+  created () {
+    return this.$store.dispatch('FETCH_AUTH_USER')
+  }
 }
 </script>
 

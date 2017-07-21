@@ -3,7 +3,18 @@ import {API} from '../api/api'
 export default {
   FETCH_STATS: ({ commit, state }) => {
     API.get('/stats').then(items => commit('SET_STATS', {items}))
+  },
+
+  FETCH_AUTH_USER: ({ commit, state }) => {
+    API.get('/user').then(items => commit('SET_AUTH_USER', {items}))
   }
+
+  /*
+  AUTH_USER: ({ commit, state }, credentials) => {
+    console.log(credentials)
+    API.post('/auth/login', credentials).then(items => commit('SET_AUTH_USER', {items}))
+  }
+  */
   /*
   // ensure data for rendering given list type
   FETCH_LIST_DATA: ({ commit, dispatch, state }, { type }) => {
