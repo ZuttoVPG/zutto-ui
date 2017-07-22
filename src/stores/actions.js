@@ -1,12 +1,12 @@
-import {API} from '../api/api'
+import zutto from '../api'
 
 export default {
   FETCH_STATS: ({ commit, state }) => {
-    API.get('/stats').then(items => commit('SET_STATS', {items}))
+    zutto.stats().then(items => commit('SET_STATS', {items}))
   },
 
-  FETCH_AUTH_USER: ({ commit, state }) => {
-    API.get('/user').then(items => commit('SET_AUTH_USER', {items}))
+  REFRESH_AUTH_USER: ({ commit, state }) => {
+    zutto.user.get().then(items => commit('SET_AUTH_USER', {items}))
   }
 
   /*

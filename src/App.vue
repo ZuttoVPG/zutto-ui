@@ -88,7 +88,7 @@ export default {
     }
   },
   created () {
-    return this.$store.dispatch('FETCH_AUTH_USER')
+    // return this.$store.dispatch('FETCH_AUTH_USER')
   }
 }
 </script>

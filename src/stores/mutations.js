@@ -1,16 +1,10 @@
-// import Vue from 'vue'
-
 export default {
   SET_STATS: (state, { items }) => {
     state.siteStats = items.data
   },
 
   SET_AUTH_USER: (state, { items }) => {
-    if (items.data == null) {
-      state.authUser = false
-      return
-    }
-
+    console.log(items)
     state.authUser = items.data
   }
   /*

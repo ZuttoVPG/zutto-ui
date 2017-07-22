@@ -1,18 +1,27 @@
 <template>
   <div class="login">
     <h1>Login</h1>
+    <div class='row' v-if="errors.form.length > 0">
+      <div class="alert alert-danger" role="alert">{{ errors.form }}</div>
+    </div>
     <div class='row'>
       <div class='col-sm-7'>
-        <div class='form-group row'>
+        <div class='form-group row' :class="{ 'has-danger': errors.fields.username }"> 
           <label for='username' class='col-sm-2 col-form-label'>Username</label>
           <div class='col-sm-6'>
             <input type='text' class='form-control' name='username' v-model="credentials.username" placeholder='Enter username'>
+            <div class="form-control-feedback" v-show="errors.fields.username">
+              {{ errors.fields.username }} 
+            </div>
           </div>
         </div>
-        <div class='form-group row'>
+        <div class='form-group row' :class="{ 'has-danger': errors.fields.password }">
           <label for='password' class='col-sm-2 col-form-label'>Password</label>
           <div class='col-sm-6'>
             <input type='password' class='form-control' name='password' v-model="credentials.password"> 
+            <div class="form-control-feedback" v-show="errors.fields.password">
+              {{ errors.fields.password }} 
+            </div>
           </div>
         </div>
         <div class="form-group row">
@@ -26,25 +35,34 @@
 </template>
 
 <script>
-import {API} from '../api/api'
+import zutto from '../api'
 
 export default {
-  name: 'home',
+  name: 'login',
   data () {
     return {
+      errors: {
+        fields: {},
+        form: []
+      },
       credentials: {
         username: '',
         password: ''
       }
     }
   },
-  created () {
-    return this.$store.dispatch('FETCH_STATS')
-  },
   methods: {
     login () {
-      API.post('/auth/login', this.credentials).then(items => this.$store.commit('SET_AUTH_USER', {items}))
-      // return this.$store.dispatch('AUTH_USER', this.credentials)
+      this.errors.fields = {}
+      this.errors.form = []
+      zutto.auth.login(this.credentials).then(
+        (items) => {
+          this.$store.commit('SET_AUTH_USER', { items })
+        },
+        (resp) => {
+          this.errors = resp.data.errors
+        }
+      )
     }
   }
 }
