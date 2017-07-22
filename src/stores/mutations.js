@@ -4,8 +4,19 @@ export default {
   },
 
   SET_AUTH_USER: (state, { items }) => {
-    console.log(items)
-    state.authUser = items.data
+    state.authToken = {
+      session: items.data.session,
+      token: items.data.token
+    }
+    state.authUser = items.data.user
+  },
+
+  SET_USER_PROFILE: (state, { items }) => {
+    items = items.data
+    var tmp = state.userProfiles
+    tmp[items.id] = items
+
+    state.userProfiles = tmp
   }
   /*
   SET_ACTIVE_TYPE: (state, { type }) => {

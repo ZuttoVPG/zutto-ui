@@ -1,15 +1,18 @@
 import Vue from 'vue'
+import store from '../stores'
 import VueResource from 'vue-resource'
 
 Vue.use(VueResource)
 
 Vue.http.options = {
-  root: '/api',
-  credentials: true,
-  xhr: {
-    withCredentials: true
-  }
+  root: '/api'
 }
+
+Vue.http.interceptors.push(function (request, next) {
+  console.log(store.state.authToken)
+  request.headers.set('Authorization', JSON.stringify(store.state.authToken))
+  next()
+})
 
 export default {
   user: Vue.resource('user{/id}'),

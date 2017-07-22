@@ -41,7 +41,7 @@
         </ul>
         <ul class='nav navbar-user ml-auto' v-show="authUser != false">
           <li class='nav-item'>
-            <a href='#' class='nav-link'>{{ authUser.username }}</a>
+            <router-link :to="'/user'" class='nav-link'>{{ authUser.username }}</router-link>
           </li>
         </ul>
       </div>

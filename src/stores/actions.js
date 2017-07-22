@@ -7,14 +7,12 @@ export default {
 
   REFRESH_AUTH_USER: ({ commit, state }) => {
     zutto.user.get().then(items => commit('SET_AUTH_USER', {items}))
+  },
+
+  FETCH_USER_PROFILE: ({ commit, state }) => {
+    zutto.user.get().then(items => commit('SET_USER_PROFILE', {items}))
   }
 
-  /*
-  AUTH_USER: ({ commit, state }, credentials) => {
-    console.log(credentials)
-    API.post('/auth/login', credentials).then(items => commit('SET_AUTH_USER', {items}))
-  }
-  */
   /*
   // ensure data for rendering given list type
   FETCH_LIST_DATA: ({ commit, dispatch, state }, { type }) => {
