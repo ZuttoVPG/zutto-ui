@@ -40,8 +40,13 @@
           </li>
         </ul>
         <ul class='nav navbar-user ml-auto' v-show="authUser != false">
-          <li class='nav-item'>
-            <router-link :to="'/user'" class='nav-link'>{{ authUser.username }}</router-link>
+          <li class='nav-item dropdown'>
+            <a href='#' class='nav-link dropdown-toggle' data-toggle='dropdown' aria-expanded="false">{{ authUser.username }}</a>
+            <div class="dropdown-menu">
+              <router-link :to="'/user/' + authUser.id" class='nav-link'>Profile</router-link>
+              <router-link :to="'/user/'" class='nav-link'>Settings</router-link>
+              <router-link :to="'/logout'" class='nav-link'>Logout</router-link>
+            </div>
           </li>
         </ul>
       </div>
@@ -49,7 +54,7 @@
 		</nav>
 
     <div id='main-content'>
-      <router-view></router-view>
+      <zutto-view v-bind:is403="false"></zutto-view>
     </div>
 
     <!-- Footer -->
@@ -78,10 +83,14 @@
 </template>
 
 <script>
+import ZuttoView from '@/components/ZuttoView'
 require('./assets/yshi-bootstrap/app.js')
 
 export default {
   name: 'app',
+  components: {
+    'zutto-view': ZuttoView
+  },
   computed: {
     authUser () {
       return this.$store.state.authUser

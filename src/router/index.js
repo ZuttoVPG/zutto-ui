@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import User from '@/components/User'
+import {NotFound} from '@/components/errors'
 
 Vue.use(Router)
 
@@ -26,6 +27,12 @@ export default new Router({
       path: '/user',
       name: 'user.profile',
       component: User
+    },
+
+    {
+      path: '*',
+      name: 'not-found',
+      component: NotFound
     }
   ]
 })
