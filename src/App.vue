@@ -18,13 +18,13 @@
             <router-link :to="'/'" class='nav-link'>Home</router-link> <span class="sr-only">(current)</span></router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Inventory</a>
+            <router-link :to="'/inventory/'" class='nav-link'>Inventory</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pets</a>
+            <router-link :to="'/pet/'" class='nav-link'>Pets</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Community</a>
+            <router-link :to="'/forum/'" class='nav-link'>Forum</router-link>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Help</a>
@@ -33,10 +33,10 @@
       
         <ul class='nav navbar-user ml-auto' v-show="authUser == false">
           <li class='nav-item'>
-            <a href='#' class='nav-link'>Sign Up</a>
+            <router-link :to="'/signup'" class='nav-link'>Sign Up</router-link>
           </li>
           <li class='nav-item'>
-            <router-link :to="'login'" class='nav-link'>Login</router-link>
+            <router-link :to="'/login'" class='nav-link'>Login</router-link>
           </li>
         </ul>
         <ul class='nav navbar-user ml-auto' v-show="authUser != false">
