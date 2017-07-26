@@ -35,12 +35,12 @@ export default {
       return Vue.http.post('auth/login', credentials)
     },
 
-    logoff () {
-      return Vue.http.post('auth/logout')
+    signup (user) {
+      return Vue.http.post('auth/signup', user)
     },
 
-    signup (newUser) {
-      return Vue.http.post('auth/signup')
+    logoff () {
+      return Vue.http.post('auth/logout')
     }
   }
 }

@@ -1,4 +1,5 @@
 import Login from '@/components/Login'
+import Signup from '@/components/Signup'
 
 export default [
   {
@@ -10,6 +11,6 @@ export default [
   {
     path: '/signup',
     name: 'public.signup',
-    component: null
+    component: Signup
   }
 ]
