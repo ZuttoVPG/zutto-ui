@@ -9,10 +9,6 @@ export default {
     is500: { type: Boolean, default: false }
   },
   render (h, ctx) {
-    // console.log('Hit renderer')
-    console.log(ctx)
-    console.log(ctx.parent.$route)
-
     if (ctx.props.is404) {
       return h(NotFound)
     }
