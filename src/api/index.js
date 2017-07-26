@@ -10,7 +10,6 @@ Vue.http.options = {
 }
 
 Vue.http.interceptors.push(function (request, next) {
-  console.log(store.state.authToken)
   request.headers.set('Authorization', JSON.stringify(store.state.authToken))
 
   next(function (response) {
