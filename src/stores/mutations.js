@@ -11,6 +11,11 @@ export default {
     state.authUser = items.data.user
   },
 
+  LOGOFF: (state, { items }) => {
+    state.authToken = {}
+    state.authUser = false
+  },
+
   SET_USER_PROFILE: (state, { items }) => {
     items = items.data
     var tmp = state.userProfiles

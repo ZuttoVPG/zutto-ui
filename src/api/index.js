@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import store from '../stores'
 import VueResource from 'vue-resource'
+import handlers from './handlers'
 
 Vue.use(VueResource)
 
@@ -11,7 +12,16 @@ Vue.http.options = {
 Vue.http.interceptors.push(function (request, next) {
   console.log(store.state.authToken)
   request.headers.set('Authorization', JSON.stringify(store.state.authToken))
-  next()
+
+  next(function (response) {
+    if (response.status === 401) {
+      return handlers.notAuthorized(response)
+    }
+
+    if (response.status === 500) {
+      return handlers.internalServerError(response)
+    }
+  })
 })
 
 export default {
