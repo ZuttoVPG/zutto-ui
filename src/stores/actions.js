@@ -11,6 +11,10 @@ export default {
 
   FETCH_USER_PROFILE: ({ commit, state }) => {
     zutto.user.get().then(items => commit('SET_USER_PROFILE', {items}))
+  },
+
+  END_SESSION: ({ commit, state }) => {
+    zutto.auth.logoff().then(items => commit('LOGOFF', {items}))
   }
 
   /*

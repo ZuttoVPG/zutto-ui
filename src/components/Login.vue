@@ -58,6 +58,7 @@ export default {
       zutto.auth.login(this.credentials).then(
         (items) => {
           this.$store.commit('SET_AUTH_USER', { items })
+          this.$router.push('/')
         },
         (resp) => {
           this.errors = resp.data.errors

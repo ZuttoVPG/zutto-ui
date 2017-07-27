@@ -45,7 +45,7 @@
             <div class="dropdown-menu">
               <router-link :to="'/user/' + authUser.id" class='nav-link'>Profile</router-link>
               <router-link :to="'/user/'" class='nav-link'>Settings</router-link>
-              <router-link :to="'/logout'" class='nav-link'>Logout</router-link>
+              <a href='#' class='nav-link' @click="logout()">Logout</a>
             </div>
           </li>
         </ul>
@@ -94,6 +94,13 @@ export default {
   computed: {
     authUser () {
       return this.$store.state.authUser
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('END_SESSION', {})
+      this.$router.push('/')
+      console.log('logout')
     }
   },
   created () {
