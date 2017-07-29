@@ -5,7 +5,9 @@ import fieldValidation from './components/forms/Validation'
 import App from './App'
 import store from './stores'
 import router from './router'
+import moment from 'moment'
 
+window.moment = moment
 Vue.config.productionTip = false
 Vue.component('field-validation', fieldValidation)
 

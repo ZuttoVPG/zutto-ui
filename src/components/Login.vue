@@ -61,16 +61,6 @@ export default {
     }
   },
   methods: {
-    validate () {
-      this.$validator.validateAll().then(result => {
-        if (!result) {
-          return
-        }
-
-        this.login()
-      })
-    },
-
     login () {
       this.fieldErrors = {}
       this.generalErrors = []
@@ -85,6 +75,16 @@ export default {
           this.generalErrors = resp.data.errors.form
         }
       )
+    },
+
+    validate () {
+      this.$validator.validateAll().then(result => {
+        if (!result) {
+          return
+        }
+
+        this.login()
+      })
     }
   }
 }

@@ -1,80 +1,91 @@
 <template>
   <div class="signup">
     <h1>Sign Up</h1>
-    <div class='row' v-if="errors.form.length > 0">
-      <div class="alert alert-danger" role="alert">{{ errors.form }}</div>
+    <div class='row' v-if="generalErrors.length > 0">
+      <div class="alert alert-danger" role="alert">
+        <span v-for="error in generalErrors">{{ error }}</span>
+      </div>
     </div>
-    <div class='row'>
-      <div class='col-sm-7'>
 
-        <div class='form-group row' :class="{ 'has-danger': errors.fields.username }"> 
-          <label for='username' class='col-sm-2 col-form-label'>Username</label>
-          <div class='col-sm-6'>
-            <input type='text' class='form-control' name='username' v-model="signup.username">
-            <div class="form-control-feedback" v-show="errors.fields.username">
-              {{ errors.fields.username }} 
+
+    <form v-on:submit.prevent="validate()">
+      <div class='row'>
+        <div class='col-sm-7'>
+
+          <div class='form-group row'> 
+            <label for='username' class='col-sm-2 col-form-label'>Username</label>
+            <div class='col-sm-6'>
+              <field-validation :status="errors" :customErrors="fieldErrors" field="username">
+                <template slot="form-field" scope="validator">
+                  <input type='text' class='form-control' name='username' v-model="signup.username" :class="validator.iconClass" v-validate="'required|max:32'">
+                </template>
+              </field-validation>
             </div>
           </div>
-        </div>
 
-        <div class='form-group row' :class="{ 'has-danger': errors.fields.email }"> 
-          <label for='email' class='col-sm-2 col-form-label'>Email Address</label>
-          <div class='col-sm-6'>
-            <input type='email' class='form-control' name='email' v-model="signup.email">
-            <div class="form-control-feedback" v-show="errors.fields.email">
-              {{ errors.fields.email}} 
+          <div class='form-group row'> 
+            <label for='email' class='col-sm-2 col-form-label'>Email Address</label>
+            <div class='col-sm-6'>
+              <field-validation :status="errors" :customErrors="fieldErrors" field="email">
+                <template slot="form-field" scope="validator">
+                  <input type='email' class='form-control' name='email' v-model="signup.email" :class="validator.iconClass" v-validate="'required|email|max:255'">
+                </template>
+              </field-validation>
             </div>
           </div>
-        </div>
 
-        <div class='form-group row' :class="{ 'has-danger': errors.fields.password }">
-          <label for='password' class='col-sm-2 col-form-label'>Password</label>
-          <div class='col-sm-6'>
-            <input type='password' class='form-control' name='password' v-model="signup.password"> 
-            <div class="form-control-feedback" v-show="errors.fields.password">
-              {{ errors.fields.password }} 
+          <div class='form-group row'>
+            <label for='password' class='col-sm-2 col-form-label'>Password</label>
+            <div class='col-sm-6'>
+              <field-validation :status="errors" :customErrors="fieldErrors" field="password">
+                <template slot="form-field" scope="validator">
+                  <input type='password' class='form-control' name='password' v-model="signup.password" :class="validator.iconClass" v-validate="'required|min:8'"> 
+                </template>
+              </field-validation>
             </div>
           </div>
-        </div>
 
-        <div class='form-group row' :class="{ 'has-danger': errors.fields.passwordConfirm }">
-          <label for='passwordConfirm' class='col-sm-2 col-form-label'>Confirm Password</label>
-          <div class='col-sm-6'>
-            <input type='password' class='form-control' name='passwordConfirm' v-model="signup.passwordConfirm"> 
-            <div class="form-control-feedback" v-show="errors.fields.passwordConfirm">
-              {{ errors.fields.passwordConfirm }} 
+          <div class='form-group row'>
+            <label for='passwordConfirm' class='col-sm-2 col-form-label'>Confirm Password</label>
+            <div class='col-sm-6'>
+              <field-validation :status="errors" :customErrors="fieldErrors" field="passwordConfirm">
+                <template slot="form-field" scope="validator">
+                  <input type='password' class='form-control' name='passwordConfirm' v-model="signup.passwordConfirm" :class="validator.iconClass" v-validate="'required|min:8|confirmed:password'"> 
+                </template>
+              </field-validation>
             </div>
           </div>
-        </div>
 
-        <div class='form-group row' :class="{ 'has-danger': errors.fields.birthDate}">
-          <label for='birthDate' class='col-sm-2 col-form-label'>Birth Date</label>
-          <div class='col-sm-6'>
-            <input type='date' class='form-control' name='birthDate' v-model="signup.birthDate"> 
-            <div class="form-control-feedback" v-show="errors.fields.birthDate">
-              {{ errors.fields.birthDate}} 
+          <div class='form-group row'>
+            <label for='birthDate' class='col-sm-2 col-form-label'>Birth Date</label>
+            <div class='col-sm-6'>
+              <field-validation :status="errors" :customErrors="fieldErrors" field="birthDate">
+                <template slot="form-field" scope="validator">
+                  <input type='date' class='form-control' name='birthDate' v-model="signup.birthDate" :class="validator.iconClass" v-validate="'required|date_format:YYYY-MM-DD'">
+                </template>
+              </field-validation>
             </div>
           </div>
-        </div>
 
-        <div class='form-group row' :class="{ 'has-danger': errors.fields.tosAccept}">
-          <label for='tosAccept' class='col-sm-2 col-form-label'>Agree to Terms of Service</label>
-          <div class='col-sm-6'>
-            <input type='checkbox' class='form-control form-check-input' name='tosAccept' v-model="signup.tosAccept"> 
-            <div class="form-control-feedback" v-show="errors.fields.tosAccept">
-              {{ errors.fields.tosAccept }} 
+          <div class='form-group row'>
+            <label for='tosAccept' class='col-sm-2 col-form-label'>Agree to Terms of Service</label>
+            <div class='col-sm-6'>
+              <field-validation :status="errors" :customErrors="fieldErrors" field="tosAccept">
+                <template slot="form-field" scope="validator">
+                  <input type='checkbox' class='form-control form-check-input' name='tosAccept' v-model="signup.tosAccept" :class="validator.iconClass" v-validate="'required'"> 
+                </template>
+              </field-validation>
             </div>
           </div>
-        </div>
 
-
-        <div class="form-group row">
-          <div class='offset-sm-2 sm-col-6'>
-            <button type='submit' class='btn btn-primary' @click="submitSignup()">Sign up</button>
+          <div class="form-group row">
+            <div class='offset-sm-2 sm-col-6'>
+              <button type='submit' class='btn btn-primary'>Sign up</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -85,10 +96,8 @@ export default {
   name: 'signup',
   data () {
     return {
-      errors: {
-        fields: {},
-        form: []
-      },
+      fieldErrors: {},
+      generalErrors: [],
       signup: {
         username: '',
         password: '',
@@ -100,27 +109,29 @@ export default {
     }
   },
   methods: {
-    submitSignup () {
-      if (this.signup.passwordConfirm.length < 8) {
-        this.errors.fields.passwordConfirm = 'Password must be 8 characters'
-        return
-      }
-
-      if (this.signup.password !== this.signup.passwordConfirm) {
-        this.errors.fields.passwordConfirm = 'Passwords must match'
-        return
-      }
-
-      this.errors.fields = {}
-      this.errors.form = []
+    register () {
+      this.fieldErrors = {}
+      this.generalErrors = []
       zutto.auth.signup(this.signup).then(
         (items) => {
           this.$store.commit('SET_AUTH_USER', { items })
+          this.$router.push('/')
         },
         (resp) => {
-          this.errors = resp.data.errors
+          this.fieldErrors = resp.data.errors.fields
+          this.generalErrors = resp.data.errors.form
         }
       )
+    },
+
+    validate () {
+      this.$validator.validateAll().then(result => {
+        if (!result) {
+          return
+        }
+
+        this.register()
+      })
     }
   }
 }
