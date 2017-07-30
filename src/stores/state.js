@@ -1,7 +1,7 @@
 export const STORAGE_KEY = 'zutto'
 
 var defaultState = {
-  authToken: {},
+  authToken: '',
   authUser: false,
   userProfiles: {},
   siteStats: {},

@@ -114,8 +114,21 @@ export default {
       this.generalErrors = []
       zutto.auth.signup(this.signup).then(
         (items) => {
-          this.$store.commit('SET_AUTH_USER', { items })
-          this.$router.push('/')
+          zutto.auth.login({
+            username: this.signup.username,
+            password: this.signup.password
+          }).then(
+            (items) => {
+              var token = items.data.access_token
+              this.$store.commit('SET_TOKEN', { token })
+              this.$store.dispatch('FETCH_AUTH_USER')
+              this.$router.push('/')
+            },
+            (resp) => {
+              this.fieldErrors = resp.data.errors.fields
+              this.generalErrors = resp.data.errors.form
+            }
+          )
         },
         (resp) => {
           this.fieldErrors = resp.data.errors.fields

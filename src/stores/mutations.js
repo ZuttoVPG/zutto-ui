@@ -3,16 +3,16 @@ export default {
     state.siteStats = items.data
   },
 
+  SET_TOKEN: (state, { token }) => {
+    state.authToken = token
+  },
+
   SET_AUTH_USER: (state, { items }) => {
-    state.authToken = {
-      session: items.data.session,
-      token: items.data.token
-    }
-    state.authUser = items.data.user
+    state.authUser = items.data
   },
 
   LOGOFF: (state, { items }) => {
-    state.authToken = {}
+    state.authToken = ''
     state.authUser = false
   },
 

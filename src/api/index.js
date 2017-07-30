@@ -2,6 +2,7 @@ import Vue from 'vue'
 import store from '../stores'
 import VueResource from 'vue-resource'
 import handlers from './handlers'
+import jwtDecode from 'jwt-decode'
 
 Vue.use(VueResource)
 
@@ -10,7 +11,7 @@ Vue.http.options = {
 }
 
 Vue.http.interceptors.push(function (request, next) {
-  request.headers.set('Authorization', JSON.stringify(store.state.authToken))
+  request.headers.set('Authorization', 'Bearer ' + store.state.authToken)
 
   next(function (response) {
     if (response.status === 401) {
@@ -32,15 +33,27 @@ export default {
 
   auth: {
     login (credentials) {
-      return Vue.http.post('auth/login', credentials)
+      return Vue.http.post('oauth/token', {
+        grant_type: 'password',
+        client_id: '1',
+        client_secret: '6vsytKHOZbVqDuexJUyS5j0GZhAvRpaQyIfKPFvI',
+        scope: '*',
+        username: credentials.username,
+        password: credentials.password
+      })
     },
 
     signup (user) {
-      return Vue.http.post('auth/signup', user)
+      return Vue.http.put('user', user)
     },
 
     logoff () {
-      return Vue.http.post('auth/logout')
+      var tokenId = ''
+      if (store.state.authToken !== '') {
+        tokenId = jwtDecode(store.state.authToken).jti
+      }
+
+      return Vue.http.delete('oauth/tokens/' + tokenId)
     }
   }
 }

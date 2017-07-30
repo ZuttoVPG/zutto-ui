@@ -5,7 +5,7 @@ export default {
     zutto.stats().then(items => commit('SET_STATS', {items}))
   },
 
-  REFRESH_AUTH_USER: ({ commit, state }) => {
+  FETCH_AUTH_USER: ({ commit, state }) => {
     zutto.user.get().then(items => commit('SET_AUTH_USER', {items}))
   },
 
