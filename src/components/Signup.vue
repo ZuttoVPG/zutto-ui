@@ -8,7 +8,7 @@
     </div>
 
 
-    <form v-on:submit.prevent="validate()">
+    <form @submit.prevent="validate">
       <div class='row'>
         <div class='col-sm-7'>
 
@@ -79,10 +79,23 @@
           </div>
 
           <div class="form-group row">
+            <div class="offset-sm2 sm-col-6">
+              <div id='recaptcha' class="g-recaptcha" :data-sitekey="captchaKey"></div>
+
+              <field-validation :status="errors" :customErrors="fieldErrors" field="captchaToken">
+                <template slot="form-field" scope="validator">
+                  <input type='hidden' name='captchaToken' v-model="signup.captchaToken" v-validate="'required'">
+                </template>
+              </field-validation>
+            </div>
+          </div>
+
+          <div class="form-group row">
             <div class='offset-sm-2 sm-col-6'>
               <button type='submit' class='btn btn-primary'>Sign up</button>
             </div>
           </div>
+
         </div>
       </div>
     </form>
@@ -91,11 +104,13 @@
 
 <script>
 import zutto from '../api'
+import config from '../config'
 
 export default {
   name: 'signup',
   data () {
     return {
+      captchaKey: config.captchaKey,
       fieldErrors: {},
       generalErrors: [],
       signup: {
@@ -104,12 +119,17 @@ export default {
         passwordConfirm: '',
         email: '',
         birthDate: '',
-        tosAccept: ''
+        tosAccept: '',
+        captchaToken: ''
       }
     }
   },
   methods: {
-    register () {
+    processCaptcha (resp) {
+      console.log('Hit check captcha')
+      console.log(resp)
+    },
+    register (captchaToken) {
       this.fieldErrors = {}
       this.generalErrors = []
       zutto.auth.signup(this.signup).then(
@@ -139,8 +159,11 @@ export default {
 
     validate () {
       this.$validator.validateAll().then(result => {
+        // Put the captcha token into the model
+        this.signup.captchaToken = window.grecaptcha.getResponse()
+
         if (!result) {
-          return
+          return false
         }
 
         this.register()

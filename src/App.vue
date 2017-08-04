@@ -85,6 +85,7 @@
 <script>
 import ZuttoView from '@/components/ZuttoView'
 require('./assets/yshi-bootstrap/app.js')
+require('vue-recaptcha/dist/vue-recaptcha.min.js')
 
 export default {
   name: 'app',
