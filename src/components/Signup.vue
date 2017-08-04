@@ -80,7 +80,7 @@
 
           <div class="form-group row">
             <div class="offset-sm2 sm-col-6">
-              <div id='recaptcha' class="g-recaptcha" :data-sitekey="captchaKey"></div>
+              <div id='recaptcha' class="g-recaptcha"></div>
 
               <field-validation :status="errors" :customErrors="fieldErrors" field="captchaToken">
                 <template slot="form-field" scope="validator">
@@ -108,11 +108,15 @@ import config from '../config'
 
 export default {
   name: 'signup',
+  mounted () {
+    this.captchaWidget = window.grecaptcha.render('recaptcha', {sitekey: this.captchaKey})
+  },
   data () {
     return {
       captchaKey: config.captchaKey,
       fieldErrors: {},
       generalErrors: [],
+      captchaWidget: null,
       signup: {
         username: '',
         password: '',
@@ -125,10 +129,6 @@ export default {
     }
   },
   methods: {
-    processCaptcha (resp) {
-      console.log('Hit check captcha')
-      console.log(resp)
-    },
     register (captchaToken) {
       this.fieldErrors = {}
       this.generalErrors = []
@@ -153,15 +153,19 @@ export default {
         (resp) => {
           this.fieldErrors = resp.data.errors.fields
           this.generalErrors = resp.data.errors.form
+
+          // Reset the captcha; token is probably no good now
+          window.grecaptcha.reset(this.captchaWidget)
+          this.signup.captchaToken = ''
         }
       )
     },
 
     validate () {
-      this.$validator.validateAll().then(result => {
-        // Put the captcha token into the model
-        this.signup.captchaToken = window.grecaptcha.getResponse()
+      // Put the captcha token into the model
+      this.signup.captchaToken = window.grecaptcha.getResponse(this.captchaWidget)
 
+      this.$validator.validateAll().then(result => {
         if (!result) {
           return false
         }
